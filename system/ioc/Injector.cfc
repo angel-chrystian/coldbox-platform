@@ -541,6 +541,7 @@ component serializable="false" accessors="true" implements="coldbox.system.ioc.I
 
 		// Check Scan Locations In Order
 		for( var thisScanPath in scanLocations){
+			if( find( ":", CFCName ) ) continue;
 			// Check if located? If so, return instantiation path
 			if( fileExists( scanLocations[ thisScanPath ] & CFCName ) ){
 				if( variables.log.canDebug() ){ variables.log.debug( "Instance: #arguments.name# located in #thisScanPath#" ); }
@@ -549,11 +550,10 @@ component serializable="false" accessors="true" implements="coldbox.system.ioc.I
 		}
 
 		// Not found, so let's do full namespace location
-		if( fileExists( expandPath( "/" & CFCName ) ) ){
+		if( not find( ":", CFCName ) and  fileExists( expandPath( "/" & CFCName ) ) ){
 			if( variables.log.canDebug() ){ variables.log.debug( "Instance: #arguments.name# located as is." ); }
 			return arguments.name;
 		}
-
 		// debug info, NADA found!
 		if( variables.log.canDebug() ){ variables.log.debug( "Instance: #arguments.name# was not located anywhere" ); }
 		return "";
